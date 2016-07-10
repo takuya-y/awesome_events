@@ -5,6 +5,17 @@ class EventsController < ApplicationController
   end
 
   def create
-    redirect_to controller: :welcome, action: :index
+    @event = Event.new(event_params)
+    if @event.save
+      redirect_to controller: :welcome, action: :index
+    else
+      render :new
+    end
+  end
+
+  private
+
+  def event_params
+    params.require(:event).permit(:name,:place,:content,:start_time,:end_time)
   end
 end
