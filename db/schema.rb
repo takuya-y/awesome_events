@@ -14,38 +14,38 @@
 ActiveRecord::Schema.define(version: 20160714120836) do
 
   create_table "events", force: :cascade do |t|
-    t.integer  "owner_id"
-    t.string   "name"
-    t.string   "place"
+    t.integer  "owner_id",   limit: 4
+    t.string   "name",       limit: 255
+    t.string   "place",      limit: 255
     t.datetime "start_time"
     t.datetime "end_time"
-    t.text     "content"
+    t.text     "content",    limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "events", ["owner_id"], name: "index_events_on_owner_id"
+  add_index "events", ["owner_id"], name: "index_events_on_owner_id", using: :btree
 
   create_table "tickets", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "event_id",   null: false
-    t.string   "comment"
+    t.integer  "user_id",    limit: 4
+    t.integer  "event_id",   limit: 4,   null: false
+    t.string   "comment",    limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "tickets", ["event_id", "user_id"], name: "index_tickets_on_event_id_and_user_id", unique: true
-  add_index "tickets", ["user_id", "event_id"], name: "index_tickets_on_user_id_and_event_id", unique: true
+  add_index "tickets", ["event_id", "user_id"], name: "index_tickets_on_event_id_and_user_id", unique: true, using: :btree
+  add_index "tickets", ["user_id", "event_id"], name: "index_tickets_on_user_id_and_event_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "provider",   null: false
-    t.string   "uid",        null: false
-    t.string   "nickname",   null: false
-    t.string   "image_url",  null: false
+    t.string   "provider",   limit: 255, null: false
+    t.string   "uid",        limit: 255, null: false
+    t.string   "nickname",   limit: 255, null: false
+    t.string   "image_url",  limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "users", ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
+  add_index "users", ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, using: :btree
 
 end
